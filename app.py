@@ -7,7 +7,7 @@ import shutil
 # attackers wont have access to the actual user passwords
 # make sure virtual environment is activated, then run pip install Flask-Bcrypt to install bcrypt
 from flask_bcrypt import Bcrypt
-from sqlalchemy import desc
+from sqlalchemy import desc, create_engine
 from models import db, User, Forum, Thread, Comment, Review, Game, Profile, Like
 # pip install requests
 import requests
@@ -38,7 +38,7 @@ app.secret_key = 'your_secret_key'
 
 # DB connection
 database_url = os.getenv("DATABASE_URL")
-app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{os.getenv("DB_USER")}:{os.getenv("DB_PASS")}@{os.getenv("DB_HOST")}/{os.getenv("DB_NAME")}'
 db.init_app(app) # initializing database with the flask app
 
 bcrypt = Bcrypt(app)
